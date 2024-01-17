@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model serie {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  idApi String  @unique
+  name  String
+}
+
+model set {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  idApi       String  @unique
+  name        String
+  serieId     String
+  logo        String?
+  totalCards  Int
+}
+
+model card {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  category String
+  idApi    String @unique
+  name     String
+  image    String
+  rarity   String
+  setId    String
+  variants Json
+  type     String?
+}
+
+model news {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  article_id String @unique
+  title   String
+  link    String
+  video_url String?
+  description String
+  pubDate String
+  image_url String
+  source_priority Int
+}
