@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 //Required construct a constuctor with all fields who are final or @NonNull
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
+	
+	private final JwtService jwtService;
 
 	@Override
 	protected void doFilterInternal(
@@ -36,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		//extract the jwt from the header
 		// 7 because it’s like this
 		jwt = authHeader.substring(7);
-		// todo extract userEmail from JWT token
+		userEmail = jwtService.extractUsername(jwt);
 	}
 
 }
