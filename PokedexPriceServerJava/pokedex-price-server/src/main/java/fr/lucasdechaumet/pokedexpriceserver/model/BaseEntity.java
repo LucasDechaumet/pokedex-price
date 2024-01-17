@@ -1,16 +1,18 @@
 package fr.lucasdechaumet.pokedexpriceserver.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-public class Entity {
+@MappedSuperclass
+public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +20,6 @@ public class Entity {
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDate creationdate;
+	private Date creationdate;
 	
 }
