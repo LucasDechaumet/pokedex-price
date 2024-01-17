@@ -1,4 +1,4 @@
-package model;
+package fr.lucasdechaumet.pokedexpriceserver.model;
 
 import java.time.LocalDate;
 import java.util.Collection;

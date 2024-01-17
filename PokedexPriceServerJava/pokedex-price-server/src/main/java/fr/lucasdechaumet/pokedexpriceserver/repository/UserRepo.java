@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import model.User;
+import fr.lucasdechaumet.pokedexpriceserver.model.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
 
