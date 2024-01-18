@@ -11,6 +11,7 @@ import fr.lucasdechaumet.pokedexpriceserver.security.config.JwtService;
 import fr.lucasdechaumet.pokedexpriceserver.security.token.Token;
 import fr.lucasdechaumet.pokedexpriceserver.security.token.TokenRepo;
 import fr.lucasdechaumet.pokedexpriceserver.security.token.TokenType;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,10 +28,10 @@ public class AuthenticationService {
 	
 	private final TokenRepo tokenRepo;
 	
-	public AuthenticationResponse register(RegisterRequest request) {
+	public AuthenticationResponse register(@Valid RegisterRequest request) {
 		var user = User.builder()
 				.firstname(request.getFirstname())
-				.lastaname(request.getLastname())
+				.lastname(request.getLastname())
 				.nickname(request.getNickname())
 				.birthDate(request.getBirthDate())
 				.email(request.getEmail())
