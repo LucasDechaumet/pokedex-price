@@ -1,4 +1,4 @@
-package fr.lucasdechaumet.pokedexpriceserver.security.config;
+package fr.lucasdechaumet.pokedexpriceserver.security.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
