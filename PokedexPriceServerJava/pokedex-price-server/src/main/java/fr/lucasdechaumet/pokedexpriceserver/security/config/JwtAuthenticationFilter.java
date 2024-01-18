@@ -56,10 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 			// now i have a full userDetails and the user is not connected i can check if the token is valid
-			var isTokenValid = tokenRepo.findByToken(jwt)
+			var isTokenValide = tokenRepo.findByToken(jwt)
 					.map(t -> !t.isExpired() && !t.isRevoked())
 					.orElse(false);
-			if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
+			if (jwtService.isTokenValid(jwt, userDetails) && isTokenValide) {
 				// this object is needed by SecurityContextHolder to update securityContext
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
