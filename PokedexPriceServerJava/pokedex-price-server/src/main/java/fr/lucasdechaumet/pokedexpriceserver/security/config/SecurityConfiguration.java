@@ -38,6 +38,7 @@ public class SecurityConfiguration {
 	                .permitAll()
 	                // restriction by role
 	                .requestMatchers("/demo/**").hasAnyRole(Role.NEW_TRAINER.name())
+	                .requestMatchers("/user/**").hasAnyRole(Role.NEW_TRAINER.name())
 	                .anyRequest()
 	                // any request you must be connected
 	                .authenticated()
