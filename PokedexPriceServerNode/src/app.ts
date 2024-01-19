@@ -11,8 +11,6 @@ app.use(cors());
 app.use("/news", newsRouter);
 app.use("/pokemon", pokemonRouter);
 
-console.log("Je lance l'application");
-
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
