@@ -1,21 +1,17 @@
 package fr.lucasdechaumet.pokedexpriceserver.security.auth;
 
-import java.util.Date;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.lucasdechaumet.pokedexpriceserver.model.Trainer;
 import fr.lucasdechaumet.pokedexpriceserver.model.User;
 import fr.lucasdechaumet.pokedexpriceserver.repository.UserRepo;
 import fr.lucasdechaumet.pokedexpriceserver.security.service.JwtService;
@@ -56,24 +52,21 @@ public class AuthenticationService {
 	            .password(passwordEncoder.encode(request.getPassword()))
 	            .isActivated(false)
 	            .role(request.getRole())
+	            .trainer(new Trainer()	)
 	            .build();
+	    	user.getTrainer().setUser(user);
 	        userRepo.save(user);
 	        // we dont use any more the token in the registration because first we want that the user confirme
 	        // our account in the mail
 	        User savedUser = user;
 	        var jwtToken = jwtService.generateValidationToken(user);
-	        System.out.println("TOKEN : " + jwtToken);
-	        System.out.println("MAIL : " + user.getEmail());
 //	        var refreshToken = jwtService.generateRefreshToken(savedUser);
 //	        saveUserToken(savedUser, jwtToken);
 	        String link = "http://localhost:8080/sign/validation?token=" + jwtToken;
-	        emailSender.send(user.getEmail(), user.getFirstname(), link);
+//	        emailSender.send(user.getEmail(), user.getFirstname(), link);
 		} catch (MailSendException e) {
 			throw new RuntimeException("Le mail n'est pas correct", e);
 	    } catch (Exception e) {
-	    	System.out.println("==========================================");
-	    	System.out.println(e);
-	    	System.out.println("==========================================");
 	        throw new RuntimeException("Une erreur s'est produite lors de l'enregistrement de l'utilisateur", e);
 	    }
 	}
