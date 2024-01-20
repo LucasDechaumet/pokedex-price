@@ -47,6 +47,7 @@ public class AuthenticationService {
 				.birthDate(request.getBirthDate())
 				.email(request.getEmail())
 				.password(passwordEncoder.encode(request.getPassword()))
+				.isActivated(false)
 				.role(request.getRole())
 				.build();
 		userRepo.save(user);
