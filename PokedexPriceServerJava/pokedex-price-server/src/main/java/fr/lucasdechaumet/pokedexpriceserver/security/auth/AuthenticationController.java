@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -24,8 +25,9 @@ public class AuthenticationController {
 
 	// first we want to sign up so we pass the request in the service with the register method
 	@PostMapping("/up")
-	public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequest request) {
-		return ResponseEntity.ok(service.register(request));
+	public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) {
+		service.register(request);
+		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/in")
@@ -36,5 +38,11 @@ public class AuthenticationController {
 	@PostMapping("/refresh")
 	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws StreamWriteException, DatabindException, IOException, java.io.IOException {
 		service.refreshToken(request, response);
+	}
+	
+	@PostMapping("/validation")
+	public ResponseEntity<Object> validation(@RequestParam String token) {
+		service.validation(token);
+		return ResponseEntity.ok().build();
 	}
 }

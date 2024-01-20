@@ -2,6 +2,8 @@ package fr.lucasdechaumet.pokedexpriceserver.security.auth;
 
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import fr.lucasdechaumet.pokedexpriceserver.model.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -40,7 +42,6 @@ public class RegisterRequest {
 	private LocalDate birthDate;
 	
 	@Email
-	@Column(unique = true)
 	private String email;
 	
 	@Size(min = 8, max = 24, message = "Le mot de passe doit contenir entre 8 et 24 caractères")
@@ -49,6 +50,5 @@ public class RegisterRequest {
 	private String password;
 	
 	@NotNull
-	@Enumerated(EnumType.STRING)
 	private Role role;
 }
