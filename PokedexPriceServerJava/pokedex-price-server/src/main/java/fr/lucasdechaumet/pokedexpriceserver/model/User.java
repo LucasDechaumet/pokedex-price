@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import fr.lucasdechaumet.pokedexpriceserver.security.token.Token;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,6 +33,7 @@ public class User extends BaseEntity implements UserDetails {
 	
 	private LocalDate birthDate;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String password;

@@ -1,6 +1,9 @@
 package fr.lucasdechaumet.pokedexpriceserver.security.auth;
 
+import java.util.Date;
+
 import org.springframework.http.HttpHeaders;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ import fr.lucasdechaumet.pokedexpriceserver.security.service.JwtService;
 import fr.lucasdechaumet.pokedexpriceserver.security.token.Token;
 import fr.lucasdechaumet.pokedexpriceserver.security.token.TokenRepo;
 import fr.lucasdechaumet.pokedexpriceserver.security.token.TokenType;
+import fr.lucasdechaumet.pokedexpriceserver.security.validation.EmailService;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,26 +43,39 @@ public class AuthenticationService {
 	
 	private final TokenRepo tokenRepo;
 	
-	public AuthenticationResponse register(@Valid RegisterRequest request) {
-		var user = User.builder()
-				.firstname(request.getFirstname())
-				.lastname(request.getLastname())
-				.nickname(request.getNickname())
-				.birthDate(request.getBirthDate())
-				.email(request.getEmail())
-				.password(passwordEncoder.encode(request.getPassword()))
-				.isActivated(false)
-				.role(request.getRole())
-				.build();
-		userRepo.save(user);
-		User savedUser = user;
-		var jwtToken = jwtService.generateToken(user);
-		var refreshToken = jwtService.generateRefreshToken(savedUser);
-		saveUserToken(savedUser, jwtToken);
-		return AuthenticationResponse.builder()
-				.accessToken(jwtToken)
-				.refreshToken(refreshToken)
-				.build();
+	private final EmailService emailSender;
+	
+	public void register(@Valid RegisterRequest request) {
+		try {
+	    var user = User.builder()
+	            .firstname(request.getFirstname())
+	            .lastname(request.getLastname())
+	            .nickname(request.getNickname())
+	            .birthDate(request.getBirthDate())
+	            .email(request.getEmail())
+	            .password(passwordEncoder.encode(request.getPassword()))
+	            .isActivated(false)
+	            .role(request.getRole())
+	            .build();
+	        userRepo.save(user);
+	        // we dont use any more the token in the registration because first we want that the user confirme
+	        // our account in the mail
+	        User savedUser = user;
+	        var jwtToken = jwtService.generateValidationToken(user);
+	        System.out.println("TOKEN : " + jwtToken);
+	        System.out.println("MAIL : " + user.getEmail());
+//	        var refreshToken = jwtService.generateRefreshToken(savedUser);
+//	        saveUserToken(savedUser, jwtToken);
+	        String link = "http://localhost:8080/sign/validation?token=" + jwtToken;
+	        emailSender.send(user.getEmail(), user.getFirstname(), link);
+		} catch (MailSendException e) {
+			throw new RuntimeException("Le mail n'est pas correct", e);
+	    } catch (Exception e) {
+	    	System.out.println("==========================================");
+	    	System.out.println(e);
+	    	System.out.println("==========================================");
+	        throw new RuntimeException("Une erreur s'est produite lors de l'enregistrement de l'utilisateur", e);
+	    }
 	}
 
 
@@ -66,6 +83,9 @@ public class AuthenticationService {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 		// now the user are connected because the email and password are correct	
 		var user = userRepo.findByEmail(request.getEmail()).orElseThrow();
+		if (!user.isActivated()) {
+	        throw new RuntimeException("Le compte n'est pas activé.");
+	    }
 		var jwtToken = jwtService.generateToken(user);
 		var refreshToken = jwtService.generateRefreshToken(user);
 		revokeAllUserTokens(user);
@@ -122,6 +142,16 @@ public class AuthenticationService {
 				new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
 			}
 		}
+	}
+
+
+	public void validation(String token) {
+		if (jwtService.isTokenExpired(token)) {
+			throw new RuntimeException("Votre email de confirmation à expiré");
+		}
+		User user = userRepo.findByEmail(jwtService.extractUsername(token)).orElseThrow();
+		user.setActivated(true);
+		userRepo.save(user);
 	}
 	
 }
