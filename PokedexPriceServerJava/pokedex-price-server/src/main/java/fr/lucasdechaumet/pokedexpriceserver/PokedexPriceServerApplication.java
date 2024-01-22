@@ -19,24 +19,24 @@ public class PokedexPriceServerApplication {
 		SpringApplication.run(PokedexPriceServerApplication.class, args);
 	}
 	
-//	@Bean
-//	public CommandLineRunner commandLineRunner(
-//			AuthenticationService service
-//	) {
-//		return args -> {
-//
-//			var user = RegisterRequest.builder()
-//					.firstname("Alexis")
-//					.lastname("Engrand")
-//					.nickname("Titoum")
-//					.birthDate(LocalDate.of(2001, 05, 19))
-//					.email("alexis@mail.com")
-//					.password("159753456852@Alexis")
-//					.role(Role.NEW_TRAINER)
-//					.build();
-//			String token = service.register(user);
-//			User savedUser = service.validation(token);
-//			savedUser.setActivated(true);
-//		};
-//	}
+	@Bean
+	public CommandLineRunner commandLineRunner(
+			AuthenticationService service
+	) {
+		return args -> {
+
+			var user = RegisterRequest.builder()
+					.firstname("Alexis")
+					.lastname("Engrand")
+					.nickname("Titoum")
+					.birthDate(LocalDate.of(2001, 05, 19))
+					.email("alexis@mail.com")
+					.password("159753456852@Alexis")
+					.role(Role.NEW_TRAINER)
+					.build();
+			String token = service.register(user);
+			User savedUser = service.validation(token);
+			savedUser.setActivated(true);
+		};
+	}
 }

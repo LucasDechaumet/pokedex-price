@@ -27,11 +27,11 @@ public class TrainerController {
 
 	@PostMapping("/addCards")
 	public ResponseEntity<Object> addCards(@RequestBody AddCardsRequest request, Principal principal) {
-		User user = trainerService.getUser(principal);
+		Trainer trainer = trainerService.getTrainer(principal);
 		String serieId = request.getSerieId();
 		String setId = request.getSetId();
 		Set<CardRequest> cards = request.getCards();
-		trainerService.addCards(serieId, setId, cards, user);
+		trainerService.addCards(serieId, setId, cards, trainer);
 		return ResponseEntity.ok().build();
 	}
 }

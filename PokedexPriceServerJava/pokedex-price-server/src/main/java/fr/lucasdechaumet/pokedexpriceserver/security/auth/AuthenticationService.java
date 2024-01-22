@@ -1,6 +1,7 @@
 package fr.lucasdechaumet.pokedexpriceserver.security.auth;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.lucasdechaumet.pokedexpriceserver.model.Serie;
 import fr.lucasdechaumet.pokedexpriceserver.model.Trainer;
 import fr.lucasdechaumet.pokedexpriceserver.model.User;
 import fr.lucasdechaumet.pokedexpriceserver.repository.TrainerRepo;
@@ -59,15 +61,8 @@ public class AuthenticationService {
 	            .isActivated(false)
 	            .role(request.getRole())
 	            .build();
-//	    List<Token> tokens = new ArrayList<Token>();
-//	    user.setTokens(tokens);
-	    
-	    
 	    
 	    User savedUser = userRepo.save(user);
-	    
-	    
-	    
 	    Trainer trainer = new Trainer();
 	    Trainer savedTrainer = trainerRepo.save(trainer);
 	    savedUser.setTrainer(savedTrainer);
@@ -79,9 +74,8 @@ public class AuthenticationService {
 //	        var refreshToken = jwtService.generateRefreshToken(savedUser);
 //	        saveUserToken(savedUser, jwtToken);
 	    	var jwtToken = jwtService.generateValidationToken(savedUser);
-	    	saveUserToken(savedUser, jwtToken);
-	    	revokeAllUserTokens(savedUser);
-	    	System.out.println(savedUser);
+//	    	saveUserToken(savedUser, jwtToken);
+//	    	revokeAllUserTokens(savedUser);
 	        String link = "http://localhost:8080/sign/validation?token=" + jwtToken;
 //	        emailSender.send(user.getEmail(), user.getFirstname(), link); // KEEP THAT
 	        return jwtToken; //USE TO TEST REMOVE LATER
