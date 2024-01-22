@@ -9,8 +9,10 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Trainer extends BaseEntity {
-	
+public class SetOfSerie extends BaseEntity {
+
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Serie> serie;
+    private Set<CardOfSet> cards;
+
+    private String idApi;
 }

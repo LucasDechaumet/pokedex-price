@@ -30,10 +30,8 @@ public class Token extends BaseEntity {
 	
 	private boolean revoked;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "user_id")
-	// i have no idea why i must put that here ask VINCENT
-	@ToString.Exclude
 	private User user;
 	
 }

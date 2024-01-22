@@ -13,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -20,11 +21,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class User extends BaseEntity implements UserDetails {
 
 	private String firstname;
@@ -45,11 +46,11 @@ public class User extends BaseEntity implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
-	@OneToMany(mappedBy = "user")
-	private List<Token> tokens;
-	
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private Trainer trainer;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
+    @OneToOne
+    private Trainer trainer;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -85,4 +86,19 @@ public class User extends BaseEntity implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+	
+//	@Override
+//	public String toString() {
+//	    return "User{" +
+//	            "firstname='" + firstname + '\'' +
+//	            ", lastname='" + lastname + '\'' +
+//	            ", nickname='" + nickname + '\'' +
+//	            ", birthDate=" + birthDate +
+//	            ", email='" + email + '\'' +
+//	            ", password='" + password + '\'' +
+//	            ", isActivated=" + isActivated +
+//	            ", role=" + role +
+//	            '}';
+//	}
+
 }

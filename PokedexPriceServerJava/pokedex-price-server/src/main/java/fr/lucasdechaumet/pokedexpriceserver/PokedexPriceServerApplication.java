@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import fr.lucasdechaumet.pokedexpriceserver.model.Role;
+import fr.lucasdechaumet.pokedexpriceserver.model.User;
 import fr.lucasdechaumet.pokedexpriceserver.security.auth.AuthenticationService;
 import fr.lucasdechaumet.pokedexpriceserver.security.auth.RegisterRequest;
 
@@ -23,18 +24,8 @@ public class PokedexPriceServerApplication {
 //			AuthenticationService service
 //	) {
 //		return args -> {
-//			var admin = RegisterRequest.builder()
-//					.firstname("Lucas")
-//					.lastname("Dechaumet")
-//					.nickname("Lulu")
-//					.birthDate(LocalDate.of(2001, 07, 8))
-//					.email("lucas@mail.com")
-//					.password("159753456852@Lucas")
-//					.role(Role.ADMIN)
-//					.build();
-//			System.out.println("Admin create");
 //
-//			var trainer = RegisterRequest.builder()
+//			var user = RegisterRequest.builder()
 //					.firstname("Alexis")
 //					.lastname("Engrand")
 //					.nickname("Titoum")
@@ -43,8 +34,9 @@ public class PokedexPriceServerApplication {
 //					.password("159753456852@Alexis")
 //					.role(Role.NEW_TRAINER)
 //					.build();
-//			System.out.println("Trainer create");
-//
+//			String token = service.register(user);
+//			User savedUser = service.validation(token);
+//			savedUser.setActivated(true);
 //		};
 //	}
 }

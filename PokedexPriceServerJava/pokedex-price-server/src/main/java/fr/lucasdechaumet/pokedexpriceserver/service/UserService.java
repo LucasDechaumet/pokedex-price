@@ -6,9 +6,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import fr.lucasdechaumet.pokedexpriceserver.model.ChangePasswordRequest;
 import fr.lucasdechaumet.pokedexpriceserver.model.User;
 import fr.lucasdechaumet.pokedexpriceserver.repository.UserRepo;
+import fr.lucasdechaumet.pokedexpriceserver.request.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service

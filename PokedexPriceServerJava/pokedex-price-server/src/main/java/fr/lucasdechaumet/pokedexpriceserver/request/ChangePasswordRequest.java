@@ -1,4 +1,4 @@
-package fr.lucasdechaumet.pokedexpriceserver.model;
+package fr.lucasdechaumet.pokedexpriceserver.request;
 
 import lombok.Builder;
 import lombok.Data;
