@@ -3,12 +3,13 @@ package fr.lucasdechaumet.pokedexpriceserver.service;
 import java.security.Principal;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import fr.lucasdechaumet.pokedexpriceserver.model.ChangePasswordRequest;
 import fr.lucasdechaumet.pokedexpriceserver.model.User;
 import fr.lucasdechaumet.pokedexpriceserver.repository.UserRepo;
+import fr.lucasdechaumet.pokedexpriceserver.request.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,6 +31,18 @@ public class UserService {
 		}
 		user.setPassword(encoder.encode(request.getNewPassword()));
 		repo.save(user);
+	}
+	
+	public User getUser(Principal principal) {
+		User user = null;
+		try {
+			Authentication authentication = (Authentication) principal;
+			Object principalObject = authentication.getPrincipal();
+			user = (User) principalObject;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return user;
 	}
 
 }

@@ -11,8 +11,10 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Trainer extends BaseEntity {
-	
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Serie> series = new HashSet<>();
+public class Serie extends BaseEntity {
+
+	@OneToMany(cascade = CascadeType.ALL)
+    private Set<SetOfSerie> sets = new HashSet<>();
+
+    private String idApi;
 }
