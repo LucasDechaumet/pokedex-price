@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,16 @@ public class TrainerController {
 		String setId = request.getSetId();
 		Set<CardRequest> cards = request.getCards();
 		trainerService.addCards(serieId, setId, cards, trainer);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PatchMapping("/removeCards")
+	public ResponseEntity<Object> removeCards(@RequestBody AddCardsRequest request, Principal principal) {
+		Trainer trainer = trainerService.getTrainer(principal);
+		String serieId = request.getSerieId();
+		String setId = request.getSetId();
+		Set<CardRequest> cards = request.getCards();
+		trainerService.removeCards(serieId, setId, cards, trainer);
 		return ResponseEntity.ok().build();
 	}
 }

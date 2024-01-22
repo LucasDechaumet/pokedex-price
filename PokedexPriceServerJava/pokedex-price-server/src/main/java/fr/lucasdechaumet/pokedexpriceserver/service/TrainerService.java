@@ -66,6 +66,32 @@ public class TrainerService {
 		trainerRepo.save(trainer);
 	}
 	
+	public void removeCards(String serieId, String setId, Set<CardRequest> cards, Trainer trainer) {
+		Serie serie = findOrCreateSerie(trainer, serieId);
+	    
+		SetOfSerie set = findOrCreateSetOfSerie(serie, setId);
+		
+		for (CardRequest cardRequest : cards) {
+			
+			String idApi = cardRequest.getIdApi();
+			int normalCards = cardRequest.getNormalCards();
+			int holoCards = cardRequest.getHoloCards();
+			int reverseCards = cardRequest.getReverseCards();
+					
+			CardOfSet card = findOrCreateCardOfSet(set, idApi);
+					
+			card.setNormalCards(card.getNormalCards() - normalCards);
+			card.setHoloCards(card.getHoloCards() - holoCards);
+			card.setReverseCards(card.getReverseCards() - reverseCards);
+			
+			cardOfSetRepo.save(card);
+			
+			}
+			setOfSerieRepo.save(set);
+			serieRepo.save(serie);
+			trainerRepo.save(trainer);
+	}
+	
 	public Serie findOrCreateSerie(Trainer trainer, String serieId) {
 	    if (trainer.getSeries().isEmpty()) {
 	        return createSerieAndSetIdApi(trainer, serieId);
@@ -127,5 +153,7 @@ public class TrainerService {
 		setOfSerieRepo.save(set);
 		return newCard;
 	}
+
+
 	
 }
