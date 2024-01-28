@@ -1,12 +1,14 @@
 package fr.lucasdechaumet.pokedexpriceserver.security.auth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -87,21 +89,31 @@ public class AuthenticationService {
 	}
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		// now the user are connected because the email and password are correct	
-		var user = userRepo.findByEmail(request.getEmail()).orElseThrow();
-		if (!user.isActivated()) {
-	        throw new RuntimeException("Le compte n'est pas activé.");
+	    try {
+	        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+	        // Maintenant, l'utilisateur est connecté car l'e-mail et le mot de passe sont corrects
+	        var user = userRepo.findByEmail(request.getEmail()).orElseThrow();
+	        if (!user.isActivated()) {
+	            throw new RuntimeException("Le compte n'est pas activé.");
+	        }
+	        // it was to put the role in the jwt
+//	        HashMap<String, Object> roleMap = new HashMap<>();
+//	        roleMap.put("role", user.getRole().name());
+//	        var jwtToken = jwtService.generateToken(roleMap, user);
+	        var jwtToken = jwtService.generateToken(user);
+	        var refreshToken = jwtService.generateRefreshToken(user);
+	        revokeAllUserTokens(user);
+	        saveUserToken(user, jwtToken);
+	        return AuthenticationResponse.builder()
+	                .accessToken(jwtToken)
+	                .refreshToken(refreshToken)
+	                .build();
+	    } catch (BadCredentialsException e) {
+	        // Gérer l'erreur de mauvaises informations d'identification ici
+	        throw new RuntimeException("Identifiants incorrects", e);
 	    }
-		var jwtToken = jwtService.generateToken(user);
-		var refreshToken = jwtService.generateRefreshToken(user);
-		revokeAllUserTokens(user);
-		saveUserToken(user, jwtToken);
-		return AuthenticationResponse.builder()
-				.accessToken(jwtToken)
-				.refreshToken(refreshToken)
-				.build();
 	}
+
 	
 	private void revokeAllUserTokens(User user) {
 		var validUserTokens = tokenRepo.findAllValidTokenByUser(user.getId());

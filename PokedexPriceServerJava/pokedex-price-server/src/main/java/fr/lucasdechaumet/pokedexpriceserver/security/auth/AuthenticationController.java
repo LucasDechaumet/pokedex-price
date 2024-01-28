@@ -2,6 +2,7 @@ package fr.lucasdechaumet.pokedexpriceserver.security.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +32,9 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/in")
-	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-		return ResponseEntity.ok(service.authenticate(request));
+	public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequest request) {
+		AuthenticationResponse response = service.authenticate(request);
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/refresh")
@@ -45,4 +47,5 @@ public class AuthenticationController {
 		service.validation(token);
 		return ResponseEntity.ok().build();
 	}
+	
 }
