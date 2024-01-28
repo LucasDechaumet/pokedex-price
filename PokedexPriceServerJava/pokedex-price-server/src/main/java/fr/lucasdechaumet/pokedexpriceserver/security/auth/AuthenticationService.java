@@ -99,7 +99,7 @@ public class AuthenticationService {
 	        // it was to put the role in the jwt
 //	        HashMap<String, Object> roleMap = new HashMap<>();
 //	        roleMap.put("role", user.getRole().name());
-//	        var jwtToken = jwtService.generateToken(roleMap, user);
+//	        var jwtToken = jwtService.generateToken(roleMap, user); 
 	        var jwtToken = jwtService.generateToken(user);
 	        var refreshToken = jwtService.generateRefreshToken(user);
 	        revokeAllUserTokens(user);
