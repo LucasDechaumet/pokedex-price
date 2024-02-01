@@ -12,7 +12,7 @@ import { NavTrainerComponent } from '../../components/nav-trainer/nav-trainer.co
 export class HomeScreenComponent {
   constructor(private authService: AuthService) {}
 
-  log() {
-    console.log('LOGGGG ' + this.authService.isLogged);
+  logout() {
+    this.authService.logout();
   }
 }

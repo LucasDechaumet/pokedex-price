@@ -1,0 +1,9 @@
+nav {
+  height: 9dvh;
+  background-color: aqua; /* Style général par défaut */
+
+  @media screen and (max-width: 768px) {
+    height: 6.5dvh;
+    background-color: #ed1c23; /* Style spécifique à l'écran de moins de 768 pixels */
+  }
+}
