@@ -1,0 +1,18 @@
+<nav>
+  <div class="container">
+    <div class="logo">
+      <img src="../../../assets/monpricerlogo.png" alt="" />
+    </div>
+    <mat-icon (click)="openMenu()" class="icon">{{ iconValue }}</mat-icon>
+    <div class="list_connexion" [class.mobile_menu]="menuValue">
+      <ul>
+        <li>ACCUEIL</li>
+        <li>CARTES</li>
+        <li>MARCHÉ</li>
+        <li>COFFRE-FORT</li>
+        <li>JEUX</li>
+      </ul>
+      <button (click)="signin()" class="big_white_btn">CONNEXION</button>
+    </div>
+  </div>
+</nav>

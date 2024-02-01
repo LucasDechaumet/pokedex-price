@@ -6,7 +6,11 @@ import { HomeScreenComponent } from './screens/home-screen/home-screen.component
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: 'showcase', component: ShowcaseComponent },
+  {
+    path: 'showcase',
+    component: ShowcaseComponent,
+    title: `MONPRICER - La plateforme virtuelle d'un jeu bien réel`,
+  },
   { path: 'signin', component: SignInScreenComponent, title: 'Se connecter' },
   {
     path: '',

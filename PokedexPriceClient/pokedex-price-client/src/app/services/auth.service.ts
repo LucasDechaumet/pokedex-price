@@ -24,6 +24,7 @@ export class AuthService {
         const responseData = await response.json();
         localStorage.setItem('refreshToken', responseData.refreshToken);
         localStorage.setItem('accessToken', responseData.accessToken);
+        this.isLogged = true;
         this.router.navigate(['']);
       } else if (response.status === 500) {
         const errorData = await response.json();
