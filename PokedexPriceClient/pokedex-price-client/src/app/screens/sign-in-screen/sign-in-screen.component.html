@@ -1,15 +1,50 @@
-<div class="sign-in-screen"></div>
-
-<!-- <div class="sign-in-screen">
-  <div class="formContainer">
-    <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
-      <label for="email">Email :</label>
-      <input type="email" id="email" name="email" ngModel required />
-
-      <label for="name">Password :</label>
-      <input type="password" id="password" name="password" ngModel required />
-
-      <button type="submit">Envoyer</button>
-    </form>
+<div class="sign-in-screen">
+  <div class="container">
+    <div class="cancel">
+      <mat-icon (click)="close()" class="close">close</mat-icon>
+    </div>
+    <h1 class="title">CONNEXION</h1>
+    <div class="form">
+      <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
+        <div class="mail">
+          <label for="email">Adresse e-mail</label>
+          <input
+            placeholder="Saisissez votre adresse e-mail..."
+            type="email"
+            id="email"
+            name="email"
+            ngModel
+            required
+          />
+        </div>
+        <div class="password">
+          <div class="forget">
+            <label for="name">Mot de passe</label>
+            <a>Mot de passe oublié ?</a>
+          </div>
+          <div class="input_password">
+            <input
+              placeholder="Entrez votre mot de passe..."
+              type="password"
+              id="password"
+              name="password"
+              ngModel
+              required
+            />
+            <mat-icon (click)="viewPassword()" class="password-visibility">{{
+              iconVisibility
+            }}</mat-icon>
+          </div>
+        </div>
+        <button type="submit" class="connexion big_red_btn">
+          Se connecter
+        </button>
+      </form>
+    </div>
   </div>
-</div> -->
+</div>
+<img
+  class="background"
+  src="../../../assets/circle-scatter-haikei-mobile.svg"
+  alt=""
+/>
