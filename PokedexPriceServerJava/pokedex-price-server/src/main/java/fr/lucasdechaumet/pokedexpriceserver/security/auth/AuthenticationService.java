@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.lucasdechaumet.pokedexpriceserver.model.Role;
 import fr.lucasdechaumet.pokedexpriceserver.model.Serie;
 import fr.lucasdechaumet.pokedexpriceserver.model.Trainer;
 import fr.lucasdechaumet.pokedexpriceserver.model.User;
@@ -60,8 +61,8 @@ public class AuthenticationService {
 	            .birthDate(request.getBirthDate())
 	            .email(request.getEmail())
 	            .password(passwordEncoder.encode(request.getPassword()))
-	            .isActivated(false)
-	            .role(request.getRole())
+	            .isActivated(true)
+	            .role(Role.NEW_TRAINER)
 	            .build();
 	    
 	    User savedUser = userRepo.save(user);
@@ -107,6 +108,7 @@ public class AuthenticationService {
 	        return AuthenticationResponse.builder()
 	                .accessToken(jwtToken)
 	                .refreshToken(refreshToken)
+	                .nickname(user.getNickname())
 	                .build();
 	    } catch (BadCredentialsException e) {
 	        // Gérer l'erreur de mauvaises informations d'identification ici

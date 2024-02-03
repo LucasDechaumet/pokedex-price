@@ -32,6 +32,7 @@ public class User extends BaseEntity implements UserDetails {
 	
 	private String lastname;
 	
+	@Column(unique = true)
 	private String nickname;
 	
 	private LocalDate birthDate;
